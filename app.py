@@ -49,54 +49,57 @@ def about():
 
 @st.cache(allow_output_mutation=True)
 def load_model(model_name):
-  model = model_zoo.get_model(model_name, pretrained = True)
-  return model
+	model = model_zoo.get_model(model_name, pretrained = True)
+	return model
 
 
 def plot_image(model, x , img):
-  class_IDs, scores, bounding_boxes = model(x)
-  ax = utils.viz.plot_bbox(img, bounding_boxes[0], scores[0], class_IDs[0], 
-          class_names = model.classes)
-  st.set_option('deprecation.showPyplotGlobalUse', False)
-  st.success("Object Detection Successful!! Plotting Image..")
-  st.pyplot(plt.show())
+	class_IDs, scores, bounding_boxes = model(x)
+	ax = utils.viz.plot_bbox(img, bounding_boxes[0], scores[0], class_IDs[0], 
+			class_names = model.classes)
+	st.set_option('deprecation.showPyplotGlobalUse', False)
+	st.success("Object Detection Successful!! Plotting Image..")
+	st.pyplot(plt.show())
 
 
 
 def main():
-  st.title("Object Detection App")
-  st.text("Built with gluoncv and streamlit")
-  st.sidebar.header("Detect objects with Pre-trained State-of-the-Art Models")
+	st.title("Object Detection App")
+	st.text("Built with gluoncv and streamlit")
+	st.sidebar.header("Detect objects with Pre-trained State-of-the-Art Models")
 
-  activity = st.sidebar.selectbox("Select Activity",("About the App","Detect Objects"))
-  if activity == "Detect Objects":
-    image_file = st.file_uploader("Upload Image", type = ['jpg','png','jpeg'])
+	activity = st.sidebar.selectbox("Select Activity",("About the App","Detect Objects"))
+	if activity == "Detect Objects":
+		image_file = st.file_uploader("Upload Image", type = ['jpg','png','jpeg'])
 
-    if image_file is not None:
-      image1 = Image.open(image_file)
-      rgb_im = image1.convert('RGB') 
-      image = rgb_im.save("saved_image.jpg")
-      image_path = "saved_image.jpg"
+	if image_file is not None:
+		image1 = Image.open(image_file)
+		rgb_im = image1.convert('RGB') 
+		image = rgb_im.save("saved_image.jpg")
+		image_path = "saved_image.jpg"
 
-    img_task = st.sidebar.selectbox("Select Model",["None","SSD Model", "Faster RCNN Model","YOLO Model","CenterNet Model"])
-    if img_task == "None":
-      st.warning("Upload Image and Select a Task")
-    
-    if st.sidebar.button("Detect"):
-      if img_task == "SSD Model":
-        model = load_model('ssd_512_resnet50_v1_voc')
-        x,img = data.transforms.presets.ssd.load_test(image_path,short =512)
-        plot_image(model, x, img)
-      else:
-      	pass
+	img_task = st.sidebar.selectbox("Select Model",["None","SSD Model", "Faster RCNN Model","YOLO Model","CenterNet Model"])
+	if img_task == "None":
+		st.warning("Upload Image and Select a Task")
 
+	if st.sidebar.button("Detect"):
+		if img_task == "SSD Model":
+			model = load_model('ssd_512_resnet50_v1_voc')
+			x,img = data.transforms.presets.ssd.load_test(image_path,short =512)
+			plot_image(model, x, img)
+		
+		elif img_task == "Faster RCNN Model":
+			model = load_model('faster_rcnn_resnet50_v1b_voc')
+			x,img = data.transforms.presets.rcnn.load_test(image_path,short =512)
+			plot_image(model, x, img)
 
-
-  elif activity == "About the App":
-    st.subheader("About Object Detection App")
-    st.markdown(about())
-    st.markdown("Built with gluoncv and Streamlit by [Rehan uddin](https://hardly-human.github.io/)")
-    st.success("Rehan uddin (Hardly-Human)👋😉")
+		else :
+			pass
+	elif activity == "About the App":
+		st.subheader("About Object Detection App")
+		st.markdown(about())
+		st.markdown("Built with gluoncv and Streamlit by [Rehan uddin](https://hardly-human.github.io/)")
+		st.success("Rehan uddin (Hardly-Human)👋😉")
 
 if __name__ == "__main__":
-  main()
+	main()
