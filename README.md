@@ -14,6 +14,10 @@ Using Different State-of-the-Art Pre-trained models for Object Detection.
 
   - **CenterNet Model.**
   
+### Demo Images
+![img1](https://github.com/Hardly-Human/Object-Detection-with-Pre-trained-models/blob/master/img2.png)
+![img2](https://github.com/Hardly-Human/Object-Detection-with-Pre-trained-models/blob/master/img1.png)
+  
 
 ### For Local host.💻
 
