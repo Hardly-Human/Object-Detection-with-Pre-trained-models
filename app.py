@@ -82,7 +82,7 @@ def main():
 			rgb_im = image1.convert('RGB') 
 			image = rgb_im.save("saved_image.jpg")
 			image_path = "saved_image.jpg"
-		
+
 		if st.sidebar.button("Detect"):
 			if img_task == "SSD Model":
 				model = load_model('ssd_512_resnet50_v1_voc')
@@ -97,6 +97,11 @@ def main():
 			elif img_task == "YOLO Model":
 				model = load_model('yolo3_darknet53_voc')
 				x,img = data.transforms.presets.yolo.load_test(image_path,short =512)
+				plot_image(model, x, img)
+
+			elif img_task == "CenterNet Model":
+				model = load_model('center_net_resnet18_v1b_voc')
+				x,img = data.transforms.presets.center_net.load_test(image_path,short =512)
 				plot_image(model, x, img)
 
 
