@@ -266,6 +266,8 @@ def main():
 		st.markdown(about())
 		st.markdown("Built with gluoncv and Streamlit by [Rehan uddin](https://hardly-human.github.io/)")
 		st.success("Rehan uddin (Hardly-Human)👋😉")
+		st.markdown("### [Give Feedback](https://www.iamrehan.me/forms/feedback_form/feedback_form.html)\
+	 	`            `[Report an Issue](https://www.iamrehan.me/forms/report_issue/report_issue.html)")
 
 if __name__ == "__main__":
 	main()
