@@ -206,83 +206,53 @@ def main():
     st.sidebar.header("Detect objects with Pre-trained State-of-the-Art Models")
 
     activity = st.sidebar.selectbox("Select Activity",("About the App","Detect Objects"))
-    if activity == "Detect Objects":
-        image_file = st.file_uploader("Upload Image", type = ['jpg','png','jpeg'])
-
-
-    img_task = st.sidebar.selectbox("Select Model",["None","SSD Model", "Faster RCNN Model","YOLO Model","CenterNet Model"])
-    if img_task == "None":
-        st.warning("Upload Image and Select a Task")
-
-    elif image_file is not None:
-        image1 = Image.open(image_file)
-        rgb_im = image1.convert('RGB') 
-        image = rgb_im.save("saved_image.jpg")
-        image_path = "saved_image.jpg"
-        st.image(image1,width = 700,height = 600)
-    else:
-        pass
-
-
-    if st.sidebar.button("Detect"):
-        if img_task == "SSD Model":
-            model = load_model('ssd_512_resnet50_v1_voc')
-            x,img = data.transforms.presets.ssd.load_test(image_path,short =512)
-            plot_image(model, x, img)
-            delete_image(image_path)
-
-        elif img_task == "Faster RCNN Model":
-            model = load_model('faster_rcnn_resnet50_v1b_voc')
-            x,img = data.transforms.presets.rcnn.load_test(image_path,short =512)
-            plot_image(model, x, img)
-            delete_image(image_path)
-
-        elif img_task == "YOLO Model":
-            model = load_model('yolo3_darknet53_voc')
-            x,img = data.transforms.presets.yolo.load_test(image_path,short =512)
-            plot_image(model, x, img)
-            delete_image(image_path)
-
-        elif img_task == "CenterNet Model":
-            model = load_model('center_net_resnet18_v1b_voc')
-            x,img = data.transforms.presets.center_net.load_test(image_path,short =512)
-            plot_image(model, x, img)
-            delete_image(image_path)
-
-    # About Models...
-    if img_task == "SSD Model":
-        # About SSD Model
-        st.sidebar.header("Learn more about SSD Models") 
-        if st.sidebar.checkbox("Show about SSD Models"):
-            st.write(about_ssd_model())
-        else:
-            pass
-    elif img_task == "Faster RCNN Model":
-        st.sidebar.header("Learn more about Faster RCNN Models") 
-        if st.sidebar.checkbox("Show about Faster RCNN Models"):
-            st.write(about_faster_RCNN_model())
-        else:
-            pass
-    elif img_task == "YOLO Model":
-        st.sidebar.header("Learn more about YOLO Models") 
-        if st.sidebar.checkbox("Show about YOLO Models"):
-            st.write(about_yolo_model())
-        else:
-            pass
-    elif img_task == "CenterNet Model":
-        st.sidebar.header("Learn more about CenterNet Models") 
-        if st.sidebar.checkbox("Show about CenterNet Models"):
-            st.write(about_centernet_model())
-        else:
-            pass
-
-    elif activity == "About the App":
+    if activity == "About the App":
         st.subheader("About Object Detection App")
         st.markdown(about())
         st.markdown("Built with gluoncv and Streamlit by [Rehan uddin](https://hardly-human.github.io/)")
         st.success("Rehan uddin (Hardly-Human)👋😉")
         st.markdown("### [Give Feedback](https://www.iamrehan.me/forms/feedback_form/feedback_form.html)\
         `            `[Report an Issue](https://www.iamrehan.me/forms/report_issue/report_issue.html)")
+
+    elif activity == "Detect Objects":
+        image_file = st.file_uploader("Upload Image", type = ['jpg','png','jpeg'])
+        img_task = st.sidebar.selectbox("Select Model",["None","SSD Model"])
+        if img_task == "None":
+            st.warning("Upload Image & Select a Model")
+
+        elif image_file is not None:
+            image1 = Image.open(image_file)
+            rgb_im = image1.convert('RGB') 
+            image = rgb_im.save("saved_image.jpg")
+            image_path = "saved_image.jpg"
+            st.image(image1,width = 700,height = 600)
+
+        else:
+            pass
+
+
+        if st.sidebar.button("Detect"):
+            if img_task == "SSD Model":
+                model = load_model('ssd_512_resnet50_v1_voc')
+                x,img = data.transforms.presets.ssd.load_test(image_path,short =512)
+                plot_image(model, x, img)
+                delete_image(image_path)
+            else:
+                pass
+        else:
+            pass
+        
+        # About Models...
+        if img_task == "SSD Model":
+            # About SSD Model
+            st.sidebar.header("Learn more about SSD Models") 
+            if st.sidebar.checkbox("Show about SSD Models"):
+                st.write(about_ssd_model())
+            else:
+                pass
+        else:
+            pass
+    
         
 
 if __name__ == "__main__":
